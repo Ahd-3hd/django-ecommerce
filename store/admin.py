@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Category, Product
 
+
 #describe what you want to show in admin
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

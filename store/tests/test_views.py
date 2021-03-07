@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
-from store.models import Category, Product
-from django.urls import reverse
-from django.test import Client, RequestFactory, TestCase
 from django.http import HttpRequest
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
+
+from store.models import Category, Product
 from store.views import all_products
+
 
 class TestViewResponses(TestCase):
     def setUp(self):
@@ -34,7 +36,7 @@ class TestViewResponses(TestCase):
         """
         response = self.c.get(reverse('store:category_list',args=['django']))
         self.assertEqual(response.status_code, 200)
-
+    #way num 1
     def test_homepage_html(self):
         request = HttpRequest()
         response = all_products(request)
@@ -42,7 +44,7 @@ class TestViewResponses(TestCase):
         
         self.assertIn('<title>Home</title>',html)
         self.assertEqual(response.status_code, 200)
-    
+    #way num 2
     def test_view_function(self):
         request = self.factory.get('/item/django-beginners')
         response = all_products(request)

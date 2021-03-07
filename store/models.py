@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.urls import reverse
+
 
 class Category(models.Model):
     #https://en.wikipedia.org/wiki/Database_index
