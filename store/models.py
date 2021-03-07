@@ -37,3 +37,5 @@ class Product(models.Model):
         verbose_name_plural = 'Products'
         # the - is for descending order
         ordering = ('-created',)
+    def __str__(self):
+        return self.title
