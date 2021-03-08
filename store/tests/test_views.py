@@ -4,7 +4,7 @@ from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 
 from store.models import Category, Product
-from store.views import all_products
+from store.views import product_all
 
 
 class TestViewResponses(TestCase):
@@ -16,13 +16,6 @@ class TestViewResponses(TestCase):
         self.data1 = Product.objects.create(category_id=1, title='django beginners', created_by_id=1,
                                             slug='django-beginners', price='20.00', image='django')
 
-    def test_url_allowed_hosts(self):
-        """
-        Test allowed hosts
-        """
-        response = self.c.get('/')
-        self.assertEqual(response.status_code, 200)
-        
     def test_product_detail_url(self):
         """
         test product response status
@@ -36,19 +29,30 @@ class TestViewResponses(TestCase):
         """
         response = self.c.get(reverse('store:category_list',args=['django']))
         self.assertEqual(response.status_code, 200)
-    #way num 1
+    #method num 1
     def test_homepage_html(self):
         request = HttpRequest()
-        response = all_products(request)
+        response = product_all(request)
         html = response.content.decode('utf8')
         
-        self.assertIn('<title>Home</title>',html)
+        self.assertIn('<title>BookStore</title>',html)
         self.assertEqual(response.status_code, 200)
-    #way num 2
+    #method num 2
     def test_view_function(self):
-        request = self.factory.get('/item/django-beginners')
-        response = all_products(request)
+        request = self.factory.get('/django-beginners')
+        response = product_all(request)
         html = response.content.decode('utf8')
 
-        self.assertIn('<title>Home</title>',html)
+        self.assertIn('<title>BookStore</title>',html)
         self.assertEqual(response.status_code, 200)
+    
+    def test_url_allowed_hosts(self):
+        """
+        Test allowed hosts
+        """
+        #this domain should not work
+        response = self.c.get('/',HTTP_HOST='noaddress.com')
+        self.assertEqual(response.status_code,400)
+        #this domain should work
+        response = self.c.get('/',HTTP_HOST="yourdomain.com")
+        self.assertEqual(response.status_code,200)
